@@ -1,67 +1,58 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محول العملات العالمي</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>محول العملات العالمي</title>
+
+  <!-- ربط ملف CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- كود إعلانات AdSense (تحطه هنا في المستقبل) -->
+  <!-- مثال:
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX" crossorigin="anonymous"></script>
+  -->
 </head>
 <body>
-    <div class="container">
-        <div class="converter-card">
-            <!-- العنوان -->
-            <div class="header">
-                <h1>محول العملات العالمي</h1>
-                <p>تحويل سريع ودقيق بين جميع العملات</p>
-            </div>
+  <div class="container">
+    <h1>💱 محول العملات العالمي</h1>
+    <p class="subtitle">تحويل فوري بين جميع عملات العالم</p>
 
-            <!-- العملة المصدر -->
-            <div class="currency-input">
-                <div class="currency-label">من</div>
-                <div class="input-group">
-                    <select class="currency-select" id="from-currency">
-                        <option value="USD">الدولار الأمريكي</option>
-                        <option value="EUR">اليورو</option>
-                        <option value="GBP">الجنيه الإسترليني</option>
-                        <option value="SAR">الريال السعودي</option>
-                        <option value="AED">الدرهم الإماراتي</option>
-                        <option value="EGP">الجنيه المصري</option>
-                    </select>
-                    <input type="number" class="amount-input" id="amount-from" value="1" min="0">
-                </div>
-            </div>
+    <div class="converter-box">
+      <div class="input-group">
+        <input type="number" id="amount" class="amount-input" value="1" min="0">
+        <select id="from-currency" class="currency-select"></select>
+      </div>
 
-            <!-- العملة الهدف -->
-            <div class="currency-input">
-                <div class="currency-label">إلى</div>
-                <div class="input-group">
-                    <select class="currency-select" id="to-currency">
-                        <option value="EUR">اليورو</option>
-                        <option value="USD">الدولار الأمريكي</option>
-                        <option value="GBP">الجنيه الإسترليني</option>
-                        <option value="SAR">الريال السعودي</option>
-                        <option value="AED">الدرهم الإماراتي</option>
-                        <option value="EGP">الجنيه المصري</option>
-                    </select>
-                    <input type="text" class="amount-input" id="amount-to" value="0.92" readonly>
-                </div>
-            </div>
+      <button id="swap-btn" class="swap-btn">⇅</button>
 
-            <!-- النتيجة -->
-            <div class="result-section">
-                <div class="exchange-rate" id="exchange-rate">
-                    1 USD = 0.92 EUR
-                </div>
-                <div class="conversion-detail" id="conversion-detail">
-                    1 USD = 0.9200 EUR
-                </div>
-                <div class="last-update" id="last-update">
-                    آخر تحديث: 2023/12/22
-                </div>
-            </div>
-        </div>
+      <div class="input-group">
+        <input type="text" id="converted-amount" class="amount-input" readonly>
+        <select id="to-currency" class="currency-select"></select>
+      </div>
     </div>
 
-    <script src="script.js"></script>
+    <div class="result">
+      <span id="result-text">1 USD = ...</span>
+      <span class="rate" id="rate-text"></span>
+    </div>
+
+    <p class="last-update" id="last-update">جارِ تحميل الأسعار...</p>
+
+    <!-- مساحة إعلان -->
+    <div class="ad-box">
+      <!-- هنا تقدر تحط إعلان AdSense -->
+      <!-- <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXX"
+           data-ad-slot="YYYYYYYYYY"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
+    </div>
+  </div>
+
+  <!-- ربط سكربت جافاسكربت -->
+  <script src="script.js"></script>
 </body>
 </html>
