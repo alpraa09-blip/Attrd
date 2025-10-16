@@ -1,42 +1,329 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>محول العملات العالمي 🌍</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محول العملات</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #2575fc;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .converter-box {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            display: flex;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        
+        .amount-input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 18px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .amount-input:focus {
+            border-color: #2575fc;
+            outline: none;
+        }
+        
+        .currency-select {
+            width: 120px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+            background-color: white;
+            cursor: pointer;
+        }
+        
+        .swap-btn {
+            background: #2575fc;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .swap-btn:hover {
+            background: #1a68e3;
+            transform: rotate(180deg);
+        }
+        
+        .result {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2575fc;
+            min-height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .rate {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+            font-weight: normal;
+        }
+        
+        .last-update {
+            color: #888;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .currency-select {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .swap-btn {
+                margin: 10px 0;
+                transform: rotate(90deg);
+            }
+            
+            .swap-btn:hover {
+                transform: rotate(270deg);
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>محول العملات العالمي</h1>
-    <p class="subtitle">تحويل سريع ودقيق بين جميع العملات</p>
-
-    <div class="converter-box">
-      <div class="input-group">
-        <select id="from"></select>
-        <input type="number" id="amount" value="1" min="0" />
-      </div>
-
-      <button id="swap">⇅</button>
-
-      <div class="input-group">
-        <select id="to"></select>
-        <input type="text" id="result-amount" readonly />
-      </div>
+    <div class="container">
+        <h1>محول العملات العالمي</h1>
+        <p class="subtitle">تحويل سريع ودقيق بين جميع العملات</p>
+        
+        <div class="converter-box">
+            <div class="input-group">
+                <input type="number" class="amount-input" id="amount" placeholder="أدخل المبلغ" value="1" min="0">
+                <select class="currency-select" id="from-currency">
+                    <option value="USD">الدولار الأمريكي (USD)</option>
+                    <option value="EUR">اليورو (EUR)</option>
+                    <option value="GBP">الجنيه الإسترليني (GBP)</option>
+                    <option value="JPY">الين الياباني (JPY)</option>
+                    <option value="CAD">الدولار الكندي (CAD)</option>
+                    <option value="AUD">الدولار الأسترالي (AUD)</option>
+                    <option value="CHF">الفرنك السويسري (CHF)</option>
+                    <option value="CNY">اليوان الصيني (CNY)</option>
+                    <option value="SAR">الريال السعودي (SAR)</option>
+                    <option value="AED">الدرهم الإماراتي (AED)</option>
+                    <option value="EGP">الجنيه المصري (EGP)</option>
+                    <option value="QAR">الريال القطري (QAR)</option>
+                    <option value="KWD">الدينار الكويتي (KWD)</option>
+                    <option value="BHD">الدينار البحريني (BHD)</option>
+                    <option value="OMR">الريال العماني (OMR)</option>
+                    <option value="JOD">الدينار الأردني (JOD)</option>
+                    <option value="LBP">الليرة اللبنانية (LBP)</option>
+                    <option value="TRY">الليرة التركية (TRY)</option>
+                    <option value="INR">الروبية الهندية (INR)</option>
+                    <option value="RUB">الروبل الروسي (RUB)</option>
+                </select>
+            </div>
+            
+            <button class="swap-btn" id="swap-btn">⇅</button>
+            
+            <div class="input-group">
+                <input type="text" class="amount-input" id="converted-amount" readonly>
+                <select class="currency-select" id="to-currency">
+                    <option value="EUR">اليورو (EUR)</option>
+                    <option value="USD">الدولار الأمريكي (USD)</option>
+                    <option value="GBP">الجنيه الإسترليني (GBP)</option>
+                    <option value="JPY">الين الياباني (JPY)</option>
+                    <option value="CAD">الدولار الكندي (CAD)</option>
+                    <option value="AUD">الدولار الأسترالي (AUD)</option>
+                    <option value="CHF">الفرنك السويسري (CHF)</option>
+                    <option value="CNY">اليوان الصيني (CNY)</option>
+                    <option value="SAR">الريال السعودي (SAR)</option>
+                    <option value="AED">الدرهم الإماراتي (AED)</option>
+                    <option value="EGP">الجنيه المصري (EGP)</option>
+                    <option value="QAR">الريال القطري (QAR)</option>
+                    <option value="KWD">الدينار الكويتي (KWD)</option>
+                    <option value="BHD">الدينار البحريني (BHD)</option>
+                    <option value="OMR">الريال العماني (OMR)</option>
+                    <option value="JOD">الدينار الأردني (JOD)</option>
+                    <option value="LBP">الليرة اللبنانية (LBP)</option>
+                    <option value="TRY">الليرة التركية (TRY)</option>
+                    <option value="INR">الروبية الهندية (INR)</option>
+                    <option value="RUB">الروبل الروسي (RUB)</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="result">
+            <span id="result-text">1 USD = 0.92 EUR</span>
+            <span class="rate" id="rate-text">سعر الصرف: 1 USD = 0.92 EUR</span>
+        </div>
+        
+        <p class="last-update" id="last-update">آخر تحديث: الآن</p>
     </div>
 
-    <div class="result">
-      <span id="result-text">1 USD = 0.92 EUR</span>
-      <span id="rate-text">سعر الصرف: 1 USD = 0.92 EUR</span>
-    </div>
+    <script>
+        // أسعار صرف افتراضية (لأغراض العرض فقط)
+        const exchangeRates = {
+            USD: 1,
+            EUR: 0.92,
+            GBP: 0.79,
+            JPY: 151.50,
+            CAD: 1.36,
+            AUD: 1.52,
+            CHF: 0.90,
+            CNY: 7.23,
+            SAR: 3.75,
+            AED: 3.67,
+            EGP: 47.86,
+            QAR: 3.64,
+            KWD: 0.31,
+            BHD: 0.38,
+            OMR: 0.38,
+            JOD: 0.71,
+            LBP: 89500,
+            TRY: 32.05,
+            INR: 83.30,
+            RUB: 92.50
+        };
 
-    <p id="last-update">آخر تحديث: الآن</p>
-  </div>
+        // عناصر DOM
+        const amountInput = document.getElementById('amount');
+        const fromCurrency = document.getElementById('from-currency');
+        const toCurrency = document.getElementById('to-currency');
+        const convertedAmount = document.getElementById('converted-amount');
+        const swapBtn = document.getElementById('swap-btn');
+        const resultText = document.getElementById('result-text');
+        const rateText = document.getElementById('rate-text');
+        const lastUpdate = document.getElementById('last-update');
 
-  <!-- سكريبت جوجل ادسنس -->
-  <!-- ضع كود الإعلان الخاص بك هنا -->
-  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXX"></script> -->
+        // دالة التحويل
+        function convertCurrency() {
+            const amount = parseFloat(amountInput.value);
+            const from = fromCurrency.value;
+            const to = toCurrency.value;
+            
+            if (isNaN(amount) || amount < 0) {
+                convertedAmount.value = "0.00";
+                resultText.textContent = "أدخل مبلغًا صالحًا";
+                rateText.textContent = "سعر الصرف: -";
+                return;
+            }
+            
+            // التحويل عبر الدولار الأمريكي كعملة وسيطة
+            const amountInUSD = amount / exchangeRates[from];
+            const convertedValue = amountInUSD * exchangeRates[to];
+            
+            // عرض النتيجة
+            convertedAmount.value = convertedValue.toFixed(2);
+            resultText.textContent = `${amount} ${from} = ${convertedValue.toFixed(2)} ${to}`;
+            rateText.textContent = `سعر الصرف: 1 ${from} = ${(exchangeRates[to] / exchangeRates[from]).toFixed(4)} ${to}`;
+            
+            // تحديث وقت التحديث الأخير
+            const now = new Date();
+            lastUpdate.textContent = `آخر تحديث: ${now.toLocaleTimeString('ar-EG')}`;
+        }
 
-  <script src="script.js"></script>
+        // تبديل العملات
+        function swapCurrencies() {
+            const fromValue = fromCurrency.value;
+            const toValue = toCurrency.value;
+            
+            fromCurrency.value = toValue;
+            toCurrency.value = fromValue;
+            
+            convertCurrency();
+        }
+
+        // إضافة مستمعي الأحداث
+        amountInput.addEventListener('input', convertCurrency);
+        fromCurrency.addEventListener('change', convertCurrency);
+        toCurrency.addEventListener('change', convertCurrency);
+        swapBtn.addEventListener('click', swapCurrencies);
+
+        // التحويل الأولي عند تحميل الصفحة
+        convertCurrency();
+        
+        // محاكاة تحديث الأسعار كل 30 ثانية (في تطبيق حقيقي، سيكون هذا استدعاء لـ API)
+        setInterval(() => {
+            // في تطبيق حقيقي، سنقوم هنا باستدعاء API للحصول على أحدث الأسعار
+            // لهذا المثال، سنقوم بتغيير عشوائي بسيط في الأسعار للمحاكاة
+            Object.keys(exchangeRates).forEach(currency => {
+                if (currency !== 'USD') {
+                    // تغيير عشوائي بسيط (±1%)
+                    const change = 1 + (Math.random() * 0.02 - 0.01);
+                    exchangeRates[currency] *= change;
+                }
+            });
+            
+            convertCurrency();
+        }, 30000);
+    </script>
 </body>
 </html>
