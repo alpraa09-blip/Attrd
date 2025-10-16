@@ -2,279 +2,258 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
-    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: #333;
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
     line-height: 1.6;
 }
 
-.container {
-    background-color: rgba(255, 255, 255, 0.95);
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 500px;
-    padding: 30px;
-    text-align: center;
-}
-
-header {
-    margin-bottom: 30px;
-}
-
-h1 {
-    color: #2575fc;
-    margin-bottom: 10px;
-    font-size: 28px;
-    font-weight: 700;
-}
-
-.subtitle {
-    color: #666;
-    font-size: 16px;
-    opacity: 0.8;
-}
-
-.converter-box {
-    background: white;
-    border-radius: 15px;
-    padding: 25px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    margin-bottom: 25px;
-}
-
-.input-group {
-    margin-bottom: 15px;
-}
-
-.currency-input {
+.app {
+    min-height: 100vh;
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* الهيدر */
+.header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 20px 16px;
+    text-align: center;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
+.header-content h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 4px;
+}
+
+.header-content p {
+    font-size: 14px;
+    color: #718096;
+}
+
+/* المحتوى الرئيسي */
+.main {
+    flex: 1;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* كروت العملات */
+.currency-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.card-title {
+    font-size: 14px;
+    color: #718096;
+    font-weight: 500;
+}
+
+.currency-name {
+    font-size: 12px;
+    color: #4a5568;
+    background: #f7fafc;
+    padding: 4px 8px;
+    border-radius: 8px;
+}
+
+.input-section {
+    display: flex;
+    gap: 12px;
     align-items: center;
 }
 
 .amount-input {
     flex: 1;
-    padding: 15px 20px;
-    border: 2px solid #e0e0e0;
+    border: 2px solid #e2e8f0;
     border-radius: 12px;
+    padding: 16px;
     font-size: 18px;
+    font-weight: 600;
     text-align: center;
-    transition: all 0.3s ease;
-    background: #fafafa;
+    background: white;
+    transition: all 0.2s ease;
 }
 
 .amount-input:focus {
-    border-color: #2575fc;
     outline: none;
-    background: white;
-    box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.1);
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .amount-input:read-only {
-    background-color: #f8f9fa;
-    color: #666;
-    cursor: not-allowed;
+    background: #f7fafc;
+    color: #4a5568;
 }
 
 .currency-select {
-    width: 140px;
-    padding: 15px;
-    border: 2px solid #e0e0e0;
+    border: 2px solid #e2e8f0;
     border-radius: 12px;
+    padding: 16px 12px;
     font-size: 16px;
-    background-color: white;
+    font-weight: 600;
+    background: white;
+    min-width: 100px;
     cursor: pointer;
-    transition: all 0.3s ease;
 }
 
 .currency-select:focus {
-    border-color: #2575fc;
     outline: none;
-    box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.1);
+    border-color: #667eea;
 }
 
+/* زر التبديل */
 .swap-container {
     display: flex;
     justify-content: center;
-    margin: 15px 0;
+    margin: 8px 0;
 }
 
 .swap-btn {
-    background: #2575fc;
-    color: white;
+    background: linear-gradient(135deg, #667eea, #764ba2);
     border: none;
     border-radius: 50%;
-    width: 55px;
-    height: 55px;
+    width: 60px;
+    height: 60px;
     font-size: 20px;
     cursor: pointer;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
     transition: all 0.3s ease;
     display: flex;
-    justify-content: center;
     align-items: center;
-    box-shadow: 0 4px 15px rgba(37, 117, 252, 0.3);
-}
-
-.swap-btn:hover {
-    background: #1a68e3;
-    transform: rotate(180deg);
-    box-shadow: 0 6px 20px rgba(37, 117, 252, 0.4);
+    justify-content: center;
 }
 
 .swap-btn:active {
-    transform: rotate(180deg) scale(0.95);
+    transform: scale(0.95) rotate(180deg);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.6);
 }
 
-.result-section {
-    margin-top: 20px;
+/* كرت النتيجة */
+.result-card {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 16px;
+    padding: 24px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
 }
 
-.result {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+.result-main {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.result-rate {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* التحويلات السريعة */
+.quick-conversions {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.quick-conversions h3 {
+    font-size: 16px;
+    color: #2d3748;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.quick-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.quick-btn {
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
     border-radius: 12px;
-    padding: 25px;
-    margin-bottom: 20px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #2575fc;
-    min-height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    border: 2px solid #e9ecef;
-}
-
-.rate {
+    padding: 12px 8px;
     font-size: 14px;
-    color: #666;
-    margin-top: 10px;
-    font-weight: normal;
-    opacity: 0.8;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
 }
 
-.info-section {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.quick-btn:active {
+    background: #667eea;
+    color: white;
+    transform: scale(0.98);
 }
 
-.last-update {
-    color: #888;
-    font-size: 14px;
+/* الفوتر */
+.footer {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 16px;
+    text-align: center;
+    border-top: 1px solid #e2e8f0;
 }
 
-.loading-spinner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    color: #2575fc;
-    font-size: 14px;
+.update-time {
+    font-size: 12px;
+    color: #718096;
 }
 
-.spinner {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #f3f3f3;
-    border-top: 2px solid #2575fc;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* تأثيرات للعملات */
-.currency-option {
-    padding: 10px;
-}
-
-.currency-option:hover {
-    background-color: #f0f8ff;
-}
-
-/* تحسينات للشاشات الصغيرة */
-@media (max-width: 480px) {
-    .container {
-        padding: 20px 15px;
-        border-radius: 15px;
-    }
-    
-    h1 {
-        font-size: 24px;
-    }
-    
-    .converter-box {
-        padding: 20px 15px;
-    }
-    
-    .currency-input {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .currency-select {
-        width: 100%;
+/* تحسينات للشاشات الصغيرة جداً */
+@media (max-width: 360px) {
+    .header-content h1 {
+        font-size: 22px;
     }
     
     .amount-input {
         font-size: 16px;
-        padding: 12px 15px;
+        padding: 14px;
     }
     
-    .swap-btn {
-        width: 50px;
-        height: 50px;
-        margin: 10px 0;
+    .currency-select {
+        font-size: 14px;
+        padding: 14px 8px;
+        min-width: 90px;
     }
     
-    .result {
-        font-size: 20px;
-        padding: 20px 15px;
-        min-height: 80px;
-    }
-    
-    .swap-btn:hover {
-        transform: rotate(90deg);
-    }
-    
-    .swap-btn:active {
-        transform: rotate(90deg) scale(0.95);
+    .result-main {
+        font-size: 18px;
     }
 }
 
-/* تحسينات للشاشات الكبيرة */
-@media (min-width: 768px) {
-    .container {
-        max-width: 550px;
-    }
-    
-    .converter-box {
-        padding: 30px;
-    }
-}
-
-/* تأثيرات الظل والحركة */
-.container {
-    animation: fadeInUp 0.6s ease-out;
-}
-
-@keyframes fadeInUp {
+/* تأثيرات الحركة */
+@keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(10px);
     }
     to {
         opacity: 1;
@@ -282,21 +261,17 @@ h1 {
     }
 }
 
-/* تخصيص شريط التمرير */
-::-webkit-scrollbar {
-    width: 8px;
+.currency-card, .result-card, .quick-conversions {
+    animation: fadeIn 0.5s ease-out;
 }
 
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #2575fc;
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #1a68e3;
+/* تحسينات للأجهزة التي تدعم الـ hover */
+@media (hover: hover) {
+    .swap-btn:hover {
+        transform: scale(1.05) rotate(180deg);
+    }
+    
+    .quick-btn:hover {
+        background: #edf2f7;
+    }
 }
