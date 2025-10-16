@@ -1,262 +1,235 @@
-// أسعار الصرف الافتراضية (لأغراض العرض والتجربة)
-const defaultExchangeRates = {
+// أسعار الصرف (بيانات افتراضية للتجربة)
+const exchangeRates = {
     USD: 1,
     EUR: 0.92,
     GBP: 0.79,
-    JPY: 151.50,
-    CAD: 1.36,
-    AUD: 1.52,
-    CHF: 0.90,
-    CNY: 7.23,
     SAR: 3.75,
     AED: 3.67,
     EGP: 47.86,
     QAR: 3.64,
     KWD: 0.31,
-    BHD: 0.38,
-    OMR: 0.38,
     JOD: 0.71,
-    LBP: 89500,
-    TRY: 32.05,
-    INR: 83.30,
-    RUB: 92.50
+    OMR: 0.38,
+    BHD: 0.38,
+    TRY: 32.05
+};
+
+// أسماء العملات بالعربية
+const currencyNames = {
+    USD: 'دولار أمريكي',
+    EUR: 'يورو',
+    GBP: 'جنيه إسترليني',
+    SAR: 'ريال سعودي',
+    AED: 'درهم إماراتي',
+    EGP: 'جنيه مصري',
+    QAR: 'ريال قطري',
+    KWD: 'دينار كويتي',
+    JOD: 'دينار أردني',
+    OMR: 'ريال عماني',
+    BHD: 'دينار بحريني',
+    TRY: 'ليرة تركية'
 };
 
 class CurrencyConverter {
     constructor() {
-        this.exchangeRates = { ...defaultExchangeRates };
         this.initializeElements();
-        this.bindEvents();
-        this.loadExchangeRates();
+        this.setupEventListeners();
+        this.setupQuickButtons();
+        this.convert();
     }
 
     initializeElements() {
         // عناصر الإدخال
-        this.amountInput = document.getElementById('amount');
-        this.fromCurrency = document.getElementById('from-currency');
-        this.toCurrency = document.getElementById('to-currency');
-        this.convertedAmount = document.getElementById('converted-amount');
-        
-        // عناصر التحكم
-        this.swapBtn = document.getElementById('swap-btn');
+        this.amountFrom = document.getElementById('amount-from');
+        this.amountTo = document.getElementById('amount-to');
+        this.currencyFrom = document.getElementById('currency-from');
+        this.currencyTo = document.getElementById('currency-to');
         
         // عناصر العرض
-        this.resultText = document.getElementById('result-text');
-        this.rateText = document.getElementById('rate-text');
-        this.lastUpdate = document.getElementById('last-update');
-        this.loadingSpinner = document.getElementById('loading-spinner');
+        this.fromCurrencyName = document.getElementById('from-currency-name');
+        this.toCurrencyName = document.getElementById('to-currency-name');
+        this.resultMain = document.getElementById('result-main');
+        this.resultRate = document.getElementById('result-rate');
+        this.updateTime = document.getElementById('update-time');
+        
+        // الأزرار
+        this.swapBtn = document.getElementById('swap-btn');
+        this.quickButtons = document.getElementById('quick-buttons');
     }
 
-    bindEvents() {
+    setupEventListeners() {
         // أحداث الإدخال
-        this.amountInput.addEventListener('input', () => this.convertCurrency());
-        this.fromCurrency.addEventListener('change', () => this.convertCurrency());
-        this.toCurrency.addEventListener('change', () => this.convertCurrency());
+        this.amountFrom.addEventListener('input', () => this.convert());
+        this.currencyFrom.addEventListener('change', () => {
+            this.updateCurrencyNames();
+            this.convert();
+        });
+        this.currencyTo.addEventListener('change', () => {
+            this.updateCurrencyNames();
+            this.convert();
+        });
         
-        // أحداث الأزرار
+        // زر التبديل
         this.swapBtn.addEventListener('click', () => this.swapCurrencies());
         
-        // أحداث لوحة المفاتيح
-        this.amountInput.addEventListener('keypress', (e) => this.handleKeyPress(e));
+        // تحديث تلقائي كل 30 ثانية
+        setInterval(() => this.simulateRateUpdate(), 30000);
+    }
+
+    setupQuickButtons() {
+        const quickAmounts = [1, 5, 10, 50, 100, 500];
         
-        // تحديث تلقائي
-        setInterval(() => this.loadExchangeRates(), 30000);
-    }
-
-    async loadExchangeRates() {
-        try {
-            this.showLoading(true);
-            
-            // في التطبيق الحقيقي، استخدم API مثل:
-            // const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
-            // const data = await response.json();
-            // this.exchangeRates = data.rates;
-            
-            // لمحاكاة API حقيقي
-            await this.simulateAPICall();
-            
-            this.convertCurrency();
-            this.updateLastUpdateTime();
-            this.showLoading(false);
-            
-        } catch (error) {
-            console.error('خطأ في تحميل أسعار الصرف:', error);
-            this.showError('تعذر تحديث الأسعار. جاري استخدام البيانات المحلية.');
-            this.showLoading(false);
-        }
-    }
-
-    async simulateAPICall() {
-        // محاكاة استدعاء API مع تغييرات عشوائية طفيفة
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                Object.keys(this.exchangeRates).forEach(currency => {
-                    if (currency !== 'USD') {
-                        // تغيير عشوائي بسيط (±0.5%)
-                        const change = 1 + (Math.random() * 0.01 - 0.005);
-                        this.exchangeRates[currency] *= change;
-                    }
-                });
-                resolve();
-            }, 1000);
+        this.quickButtons.innerHTML = quickAmounts.map(amount => 
+            `<button class="quick-btn" data-amount="${amount}">${amount}</button>`
+        ).join('');
+        
+        // إضافة event listeners للأزرار السريعة
+        this.quickButtons.querySelectorAll('.quick-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.amountFrom.value = e.target.dataset.amount;
+                this.convert();
+                
+                // تأثير النقر
+                e.target.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    e.target.style.transform = 'scale(1)';
+                }, 150);
+            });
         });
     }
 
-    convertCurrency() {
-        const amount = parseFloat(this.amountInput.value);
-        const from = this.fromCurrency.value;
-        const to = this.toCurrency.value;
+    convert() {
+        const amount = parseFloat(this.amountFrom.value) || 0;
+        const fromCurrency = this.currencyFrom.value;
+        const toCurrency = this.currencyTo.value;
         
-        // التحقق من صحة المدخلات
-        if (isNaN(amount) || amount < 0) {
-            this.displayInvalidAmount();
+        if (amount < 0) {
+            this.showError('الرجاء إدخال مبلغ صحيح');
             return;
         }
         
-        if (from === to) {
-            this.displaySameCurrency(amount, from);
+        if (fromCurrency === toCurrency) {
+            this.amountTo.value = amount.toFixed(2);
+            this.displayResult(amount, fromCurrency, amount, toCurrency);
             return;
         }
         
-        // إجراء التحويل
-        const convertedValue = this.calculateConversion(amount, from, to);
-        this.displayResult(amount, from, to, convertedValue);
+        const converted = this.calculateConversion(amount, fromCurrency, toCurrency);
+        this.amountTo.value = converted.toFixed(2);
+        this.displayResult(amount, fromCurrency, converted, toCurrency);
     }
 
     calculateConversion(amount, from, to) {
-        // التحويل عبر الدولار الأمريكي كعملة وسيطة
-        const amountInUSD = amount / this.exchangeRates[from];
-        return amountInUSD * this.exchangeRates[to];
+        // التحويل عبر USD كعملة وسيطة
+        const amountInUSD = amount / exchangeRates[from];
+        return amountInUSD * exchangeRates[to];
     }
 
-    displayResult(amount, from, to, convertedValue) {
-        // تنسيق الأرقام
-        const formattedAmount = this.formatNumber(amount);
-        const formattedConverted = this.formatNumber(convertedValue);
-        const exchangeRate = this.exchangeRates[to] / this.exchangeRates[from];
+    displayResult(amountFrom, currencyFrom, amountTo, currencyTo) {
+        const rate = exchangeRates[currencyTo] / exchangeRates[currencyFrom];
         
-        // تحديث واجهة المستخدم
-        this.convertedAmount.value = formattedConverted;
-        this.resultText.textContent = `${formattedAmount} ${from} = ${formattedConverted} ${to}`;
-        this.rateText.textContent = `سعر الصرف: 1 ${from} = ${exchangeRate.toFixed(6)} ${to}`;
-    }
-
-    displayInvalidAmount() {
-        this.convertedAmount.value = "0.00";
-        this.resultText.textContent = "الرجاء إدخال مبلغ صحيح";
-        this.rateText.textContent = "سعر الصرف: -";
-        this.resultText.style.color = "#dc3545";
+        this.resultMain.textContent = 
+            `${this.formatNumber(amountFrom)} ${currencyFrom} = ${this.formatNumber(amountTo)} ${currencyTo}`;
         
-        setTimeout(() => {
-            this.resultText.style.color = "#2575fc";
-        }, 2000);
-    }
-
-    displaySameCurrency(amount, currency) {
-        const formattedAmount = this.formatNumber(amount);
-        this.convertedAmount.value = formattedAmount;
-        this.resultText.textContent = `${formattedAmount} ${currency} = ${formattedAmount} ${currency}`;
-        this.rateText.textContent = `سعر الصرف: 1 ${currency} = 1.000000 ${currency}`;
+        this.resultRate.textContent = 
+            `سعر الصرف: 1 ${currencyFrom} = ${rate.toFixed(4)} ${currencyTo}`;
+        
+        this.updateTime.textContent = `آخر تحديث: ${new Date().toLocaleTimeString('ar-EG')}`;
     }
 
     swapCurrencies() {
-        const fromValue = this.fromCurrency.value;
-        const toValue = this.toCurrency.value;
+        const temp = this.currencyFrom.value;
+        this.currencyFrom.value = this.currencyTo.value;
+        this.currencyTo.value = temp;
         
-        // إضافة تأثير مرئي
+        this.updateCurrencyNames();
+        this.convert();
+        
+        // تأثير الحركة
         this.swapBtn.style.transform = 'rotate(180deg)';
-        
         setTimeout(() => {
-            this.fromCurrency.value = toValue;
-            this.toCurrency.value = fromValue;
-            this.convertCurrency();
             this.swapBtn.style.transform = 'rotate(0deg)';
         }, 300);
     }
 
-    formatNumber(number) {
-        // تنسيق الأرقام الكبيرة
-        if (number >= 1000000) {
-            return (number / 1000000).toFixed(2) + 'M';
-        } else if (number >= 1000) {
-            return (number / 1000).toFixed(2) + 'K';
-        }
+    updateCurrencyNames() {
+        const fromCode = this.currencyFrom.value;
+        const toCode = this.currencyTo.value;
         
-        // للأرقام العادية
-        return new Intl.NumberFormat('ar-EG', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }).format(number);
+        this.fromCurrencyName.textContent = 
+            `${fromCode} - ${currencyNames[fromCode]}`;
+        
+        this.toCurrencyName.textContent = 
+            `${toCode} - ${currencyNames[toCode]}`;
     }
 
-    updateLastUpdateTime() {
-        const now = new Date();
-        const timeString = now.toLocaleTimeString('ar-EG', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
+    formatNumber(num) {
+        if (num >= 1000000) {
+            return (num / 1000000).toFixed(1) + 'M';
+        }
+        if (num >= 1000) {
+            return (num / 1000).toFixed(1) + 'K';
+        }
+        return new Intl.NumberFormat('ar-EG').format(num);
+    }
+
+    simulateRateUpdate() {
+        // محاكاة تحديث الأسعار (في التطبيق الحقيقي سيكون استدعاء API)
+        Object.keys(exchangeRates).forEach(currency => {
+            if (currency !== 'USD') {
+                const change = 1 + (Math.random() * 0.02 - 0.01); // ±1%
+                exchangeRates[currency] *= change;
+            }
         });
-        this.lastUpdate.textContent = `آخر تحديث: ${timeString}`;
+        
+        this.convert();
+        this.showNotification('🔄 تم تحديث الأسعار تلقائياً');
     }
 
-    showLoading(show) {
-        this.loadingSpinner.style.display = show ? 'flex' : 'none';
-        this.lastUpdate.style.display = show ? 'none' : 'block';
+    showNotification(message) {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            font-size: 14px;
+            font-weight: 500;
+        `;
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
     }
 
     showError(message) {
-        const errorElement = document.createElement('div');
-        errorElement.className = 'error-message';
-        errorElement.textContent = message;
-        errorElement.style.cssText = `
-            background: #f8d7da;
-            color: #721c24;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            border: 1px solid #f5c6cb;
-        `;
-        
-        this.infoSection.appendChild(errorElement);
-        
+        this.resultMain.textContent = message;
+        this.resultMain.style.color = '#e53e3e';
         setTimeout(() => {
-            errorElement.remove();
-        }, 5000);
-    }
-
-    handleKeyPress(e) {
-        // منع إدخال الأحرف غير الرقمية
-        const allowedKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', 'Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight'];
-        
-        if (!allowedKeys.includes(e.key) && !e.ctrlKey && !e.metaKey) {
-            e.preventDefault();
-        }
-        
-        // منع إدخال أكثر من نقطة عشرية واحدة
-        if (e.key === '.' && this.amountInput.value.includes('.')) {
-            e.preventDefault();
-        }
-    }
-
-    get infoSection() {
-        return document.querySelector('.info-section');
+            this.resultMain.style.color = 'white';
+        }, 2000);
     }
 }
 
-// تهيئة التطبيق عند تحميل الصفحة
+// تشغيل التطبيق عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', () => {
     new CurrencyConverter();
 });
 
-// دالة مساعدة لإضافة تأثيرات
-function addVisualEffect(element, effectClass, duration = 600) {
-    element.classList.add(effectClass);
+// إضافة تأثيرات عند فتح الصفحة
+window.addEventListener('load', () => {
+    document.body.style.opacity = '0';
+    document.body.style.transition = 'opacity 0.3s ease';
+    
     setTimeout(() => {
-        element.classList.remove(effectClass);
-    }, duration);
-}
-
-// تصدير الكلاس للاستخدام في ملفات أخرى (إذا لزم الأمر)
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = CurrencyConverter;
-}
+        document.body.style.opacity = '1';
+    }, 100);
+});
