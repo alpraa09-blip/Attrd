@@ -3,97 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محول العملات العالمي</title>
+    <title>محول العملات 💰</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>محول العملات العالمي</h1>
-            <p class="subtitle">تحويل سريع ودقيق بين جميع العملات</p>
+    <div class="app">
+        <!-- الهيدر -->
+        <header class="header">
+            <div class="header-content">
+                <h1>💱 محول العملات</h1>
+                <p>حول بين العملات بسهولة</p>
+            </div>
         </header>
-        
-        <main class="converter-box">
-            <div class="input-group">
-                <div class="currency-input">
-                    <input type="number" class="amount-input" id="amount" placeholder="أدخل المبلغ" value="1" min="0">
-                    <select class="currency-select" id="from-currency">
-                        <option value="USD">الدولار الأمريكي (USD)</option>
-                        <option value="EUR">اليورو (EUR)</option>
-                        <option value="GBP">الجنيه الإسترليني (GBP)</option>
-                        <option value="JPY">الين الياباني (JPY)</option>
-                        <option value="CAD">الدولار الكندي (CAD)</option>
-                        <option value="AUD">الدولار الأسترالي (AUD)</option>
-                        <option value="CHF">الفرنك السويسري (CHF)</option>
-                        <option value="CNY">اليوان الصيني (CNY)</option>
-                        <option value="SAR">الريال السعودي (SAR)</option>
-                        <option value="AED">الدرهم الإماراتي (AED)</option>
-                        <option value="EGP">الجنيه المصري (EGP)</option>
-                        <option value="QAR">الريال القطري (QAR)</option>
-                        <option value="KWD">الدينار الكويتي (KWD)</option>
-                        <option value="BHD">الدينار البحريني (BHD)</option>
-                        <option value="OMR">الريال العماني (OMR)</option>
-                        <option value="JOD">الدينار الأردني (JOD)</option>
-                        <option value="LBP">الليرة اللبنانية (LBP)</option>
-                        <option value="TRY">الليرة التركية (TRY)</option>
-                        <option value="INR">الروبية الهندية (INR)</option>
-                        <option value="RUB">الروبل الروسي (RUB)</option>
+
+        <!-- المحتوى الرئيسي -->
+        <main class="main">
+            <!-- العملة المصدر -->
+            <div class="currency-card">
+                <div class="card-header">
+                    <span class="card-title">من</span>
+                    <span class="currency-name" id="from-currency-name">USD - دولار أمريكي</span>
+                </div>
+                <div class="input-section">
+                    <input 
+                        type="number" 
+                        class="amount-input" 
+                        id="amount-from" 
+                        value="1"
+                        placeholder="0.00"
+                        min="0"
+                    >
+                    <select class="currency-select" id="currency-from">
+                        <option value="USD">🇺🇸 USD</option>
+                        <option value="EUR">🇪🇺 EUR</option>
+                        <option value="GBP">🇬🇧 GBP</option>
+                        <option value="SAR">🇸🇦 SAR</option>
+                        <option value="AED">🇦🇪 AED</option>
+                        <option value="EGP">🇪🇬 EGP</option>
+                        <option value="QAR">🇶🇦 QAR</option>
+                        <option value="KWD">🇰🇼 KWD</option>
+                        <option value="JOD">🇯🇴 JOD</option>
+                        <option value="OMR">🇴🇲 OMR</option>
+                        <option value="BHD">🇧🇭 BHD</option>
+                        <option value="TRY">🇹🇷 TRY</option>
                     </select>
                 </div>
             </div>
-            
+
+            <!-- زر التبديل -->
             <div class="swap-container">
-                <button class="swap-btn" id="swap-btn" aria-label="تبديل العملات">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M7 10l5 5 5-5"/>
-                        <path d="M17 14l-5-5-5 5"/>
-                    </svg>
+                <button class="swap-btn" id="swap-btn">
+                    🔄
                 </button>
             </div>
-            
-            <div class="input-group">
-                <div class="currency-input">
-                    <input type="text" class="amount-input" id="converted-amount" readonly>
-                    <select class="currency-select" id="to-currency">
-                        <option value="EUR">اليورو (EUR)</option>
-                        <option value="USD">الدولار الأمريكي (USD)</option>
-                        <option value="GBP">الجنيه الإسترليني (GBP)</option>
-                        <option value="JPY">الين الياباني (JPY)</option>
-                        <option value="CAD">الدولار الكندي (CAD)</option>
-                        <option value="AUD">الدولار الأسترالي (AUD)</option>
-                        <option value="CHF">الفرنك السويسري (CHF)</option>
-                        <option value="CNY">اليوان الصيني (CNY)</option>
-                        <option value="SAR">الريال السعودي (SAR)</option>
-                        <option value="AED">الدرهم الإماراتي (AED)</option>
-                        <option value="EGP">الجنيه المصري (EGP)</option>
-                        <option value="QAR">الريال القطري (QAR)</option>
-                        <option value="KWD">الدينار الكويتي (KWD)</option>
-                        <option value="BHD">الدينار البحريني (BHD)</option>
-                        <option value="OMR">الريال العماني (OMR)</option>
-                        <option value="JOD">الدينار الأردني (JOD)</option>
-                        <option value="LBP">الليرة اللبنانية (LBP)</option>
-                        <option value="TRY">الليرة التركية (TRY)</option>
-                        <option value="INR">الروبية الهندية (INR)</option>
-                        <option value="RUB">الروبل الروسي (RUB)</option>
+
+            <!-- العملة الهدف -->
+            <div class="currency-card">
+                <div class="card-header">
+                    <span class="card-title">إلى</span>
+                    <span class="currency-name" id="to-currency-name">EUR - يورو</span>
+                </div>
+                <div class="input-section">
+                    <input 
+                        type="text" 
+                        class="amount-input" 
+                        id="amount-to" 
+                        value="0.92"
+                        readonly
+                        placeholder="0.00"
+                    >
+                    <select class="currency-select" id="currency-to">
+                        <option value="EUR">🇪🇺 EUR</option>
+                        <option value="USD">🇺🇸 USD</option>
+                        <option value="GBP">🇬🇧 GBP</option>
+                        <option value="SAR">🇸🇦 SAR</option>
+                        <option value="AED">🇦🇪 AED</option>
+                        <option value="EGP">🇪🇬 EGP</option>
+                        <option value="QAR">🇶🇦 QAR</option>
+                        <option value="KWD">🇰🇼 KWD</option>
+                        <option value="JOD">🇯🇴 JOD</option>
+                        <option value="OMR">🇴🇲 OMR</option>
+                        <option value="BHD">🇧🇭 BHD</option>
+                        <option value="TRY">🇹🇷 TRY</option>
                     </select>
+                </div>
+            </div>
+
+            <!-- النتيجة -->
+            <div class="result-card">
+                <div class="result-main" id="result-main">
+                    1 USD = 0.92 EUR
+                </div>
+                <div class="result-rate" id="result-rate">
+                    سعر الصرف: 1 USD = 0.92 EUR
+                </div>
+            </div>
+
+            <!-- العملات الشائعة -->
+            <div class="quick-conversions">
+                <h3>تحويلات سريعة</h3>
+                <div class="quick-buttons" id="quick-buttons">
+                    <!-- سيتم ملؤها بالجافاسكريبت -->
                 </div>
             </div>
         </main>
-        
-        <div class="result-section">
-            <div class="result" id="result">
-                <span id="result-text">1 USD = 0.92 EUR</span>
-                <span class="rate" id="rate-text">سعر الصرف: 1 USD = 0.92 EUR</span>
+
+        <!-- الفوتر -->
+        <footer class="footer">
+            <div class="update-time" id="update-time">
+                آخر تحديث: الآن
             </div>
-            
-            <div class="info-section">
-                <p class="last-update" id="last-update">آخر تحديث: الآن</p>
-                <div class="loading-spinner" id="loading-spinner" style="display: none;">
-                    <div class="spinner"></div>
-                    <span>جاري تحديث الأسعار...</span>
-                </div>
-            </div>
-        </div>
+        </footer>
     </div>
 
     <script src="script.js"></script>
