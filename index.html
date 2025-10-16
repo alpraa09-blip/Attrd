@@ -3,197 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محول العملات الذكي 💰</title>
+    <title>محول العملات العالمي</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="app-container">
-        <!-- الهيدر -->
-        <header class="app-header">
-            <div class="header-content">
-                <div class="logo">
-                    <i class='bx bx-transfer-alt'></i>
-                    <h1>محول العملات</h1>
-                </div>
-                <div class="live-badge" id="live-badge">
-                    <span class="pulse"></span>
-                    مباشر
-                </div>
-            </div>
-        </header>
-
-        <!-- المحتوى الرئيسي -->
-        <main class="main-content">
-            <!-- بطاقة التحويل -->
-            <div class="conversion-card">
-                <!-- العملة المصدر -->
-                <div class="currency-section from-currency">
-                    <div class="section-header">
-                        <span class="section-title">أدخل المبلغ</span>
-                        <div class="currency-info">
-                            <span class="currency-flag">🇺🇸</span>
-                            <span class="currency-code">USD</span>
-                            <span class="currency-name">دولار أمريكي</span>
-                        </div>
-                    </div>
-                    
-                    <div class="input-container">
-                        <input 
-                            type="number" 
-                            class="amount-input" 
-                            id="amount-input"
-                            value="1"
-                            placeholder="0.00"
-                            min="0"
-                            step="0.01"
-                        >
-                        <div class="input-actions">
-                            <button class="action-btn clear-btn" id="clear-btn">
-                                <i class='bx bx-x'></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="quick-amounts">
-                        <button class="quick-amount" data-amount="10">10</button>
-                        <button class="quick-amount" data-amount="50">50</button>
-                        <button class="quick-amount" data-amount="100">100</button>
-                        <button class="quick-amount" data-amount="500">500</button>
-                    </div>
-                </div>
-
-                <!-- زر التبديل -->
-                <div class="swap-section">
-                    <button class="swap-button" id="swap-button">
-                        <i class='bx bx-swap-vertical'></i>
-                    </button>
-                </div>
-
-                <!-- العملة الهدف -->
-                <div class="currency-section to-currency">
-                    <div class="section-header">
-                        <span class="section-title">ستحصل على</span>
-                        <div class="currency-info">
-                            <span class="currency-flag">🇪🇺</span>
-                            <span class="currency-code">EUR</span>
-                            <span class="currency-name">يورو</span>
-                        </div>
-                    </div>
-                    
-                    <div class="input-container">
-                        <input 
-                            type="text" 
-                            class="amount-input result-input" 
-                            id="result-input"
-                            value="0.92"
-                            readonly
-                            placeholder="0.00"
-                        >
-                        <div class="input-actions">
-                            <button class="action-btn copy-btn" id="copy-btn">
-                                <i class='bx bx-copy'></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="conversion-details">
-                        <div class="exchange-rate" id="exchange-rate">
-                            1 USD = 0.92 EUR
-                        </div>
-                        <div class="last-update" id="last-update">
-                            محدث الآن
-                        </div>
-                    </div>
-                </div>
+    <div class="container">
+        <div class="converter-card">
+            <!-- العنوان -->
+            <div class="header">
+                <h1>محول العملات العالمي</h1>
+                <p>تحويل سريع ودقيق بين جميع العملات</p>
             </div>
 
-            <!-- اختيار العملات -->
-            <div class="currency-selector">
-                <div class="selector-group">
-                    <label for="from-currency-select">من</label>
-                    <select class="currency-dropdown" id="from-currency-select">
-                        <option value="USD">🇺🇸 دولار أمريكي (USD)</option>
-                        <option value="EUR">🇪🇺 يورو (EUR)</option>
-                        <option value="GBP">🇬🇧 جنيه إسترليني (GBP)</option>
-                        <option value="SAR">🇸🇦 ريال سعودي (SAR)</option>
-                        <option value="AED">🇦🇪 درهم إماراتي (AED)</option>
-                        <option value="EGP">🇪🇬 جنيه مصري (EGP)</option>
-                        <option value="QAR">🇶🇦 ريال قطري (QAR)</option>
-                        <option value="KWD">🇰🇼 دينار كويتي (KWD)</option>
+            <!-- العملة المصدر -->
+            <div class="currency-input">
+                <div class="currency-label">من</div>
+                <div class="input-group">
+                    <select class="currency-select" id="from-currency">
+                        <option value="USD">الدولار الأمريكي</option>
+                        <option value="EUR">اليورو</option>
+                        <option value="GBP">الجنيه الإسترليني</option>
+                        <option value="SAR">الريال السعودي</option>
+                        <option value="AED">الدرهم الإماراتي</option>
+                        <option value="EGP">الجنيه المصري</option>
                     </select>
+                    <input type="number" class="amount-input" id="amount-from" value="1" min="0">
                 </div>
-                
-                <div class="selector-group">
-                    <label for="to-currency-select">إلى</label>
-                    <select class="currency-dropdown" id="to-currency-select">
-                        <option value="EUR">🇪🇺 يورو (EUR)</option>
-                        <option value="USD">🇺🇸 دولار أمريكي (USD)</option>
-                        <option value="GBP">🇬🇧 جنيه إسترليني (GBP)</option>
-                        <option value="SAR">🇸🇦 ريال سعودي (SAR)</option>
-                        <option value="AED">🇦🇪 درهم إماراتي (AED)</option>
-                        <option value="EGP">🇪🇬 جنيه مصري (EGP)</option>
-                        <option value="QAR">🇶🇦 ريال قطري (QAR)</option>
-                        <option value="KWD">🇰🇼 دينار كويتي (KWD)</option>
+            </div>
+
+            <!-- العملة الهدف -->
+            <div class="currency-input">
+                <div class="currency-label">إلى</div>
+                <div class="input-group">
+                    <select class="currency-select" id="to-currency">
+                        <option value="EUR">اليورو</option>
+                        <option value="USD">الدولار الأمريكي</option>
+                        <option value="GBP">الجنيه الإسترليني</option>
+                        <option value="SAR">الريال السعودي</option>
+                        <option value="AED">الدرهم الإماراتي</option>
+                        <option value="EGP">الجنيه المصري</option>
                     </select>
+                    <input type="text" class="amount-input" id="amount-to" value="0.92" readonly>
                 </div>
             </div>
 
-            <!-- الميزات الإضافية -->
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class='bx bx-trending-up'></i>
-                    </div>
-                    <h3>أسعار حية</h3>
-                    <p>أسعار صرف محدثة مباشرة</p>
+            <!-- النتيجة -->
+            <div class="result-section">
+                <div class="exchange-rate" id="exchange-rate">
+                    1 USD = 0.92 EUR
                 </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class='bx bx-time-five'></i>
-                    </div>
-                    <h3>تاريخ الأسعار</h3>
-                    <p>اطلع على تطور الأسعار</p>
+                <div class="conversion-detail" id="conversion-detail">
+                    1 USD = 0.9200 EUR
                 </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class='bx bx-chart'></i>
-                    </div>
-                    <h3>مخطط تفاعلي</h3>
-                    <p>شاهد التغيرات بيانياً</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class='bx bx-bell'></i>
-                    </div>
-                    <h3>تنبيهات</h3>
-                    <p>اختر سعر صرف معين</p>
+                <div class="last-update" id="last-update">
+                    آخر تحديث: 2023/12/22
                 </div>
             </div>
-        </main>
-
-        <!-- القائمة السفلية -->
-        <nav class="bottom-nav">
-            <button class="nav-item active">
-                <i class='bx bx-transfer-alt'></i>
-                <span>تحويل</span>
-            </button>
-            <button class="nav-item">
-                <i class='bx bx-chart'></i>
-                <span>الأسعار</span>
-            </button>
-            <button class="nav-item">
-                <i class='bx bx-history'></i>
-                <span>السجل</span>
-            </button>
-            <button class="nav-item">
-                <i class='bx bx-cog'></i>
-                <span>الإعدادات</span>
-            </button>
-        </nav>
+        </div>
     </div>
 
     <script src="script.js"></script>
