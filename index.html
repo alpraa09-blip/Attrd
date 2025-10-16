@@ -1,58 +1,42 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>محول العملات العالمي</title>
-
-  <!-- ربط ملف CSS -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- كود إعلانات AdSense (تحطه هنا في المستقبل) -->
-  <!-- مثال:
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX" crossorigin="anonymous"></script>
-  -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>محول العملات العالمي 🌍</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>💱 محول العملات العالمي</h1>
-    <p class="subtitle">تحويل فوري بين جميع عملات العالم</p>
+    <h1>محول العملات العالمي</h1>
+    <p class="subtitle">تحويل سريع ودقيق بين جميع العملات</p>
 
     <div class="converter-box">
       <div class="input-group">
-        <input type="number" id="amount" class="amount-input" value="1" min="0">
-        <select id="from-currency" class="currency-select"></select>
+        <select id="from"></select>
+        <input type="number" id="amount" value="1" min="0" />
       </div>
 
-      <button id="swap-btn" class="swap-btn">⇅</button>
+      <button id="swap">⇅</button>
 
       <div class="input-group">
-        <input type="text" id="converted-amount" class="amount-input" readonly>
-        <select id="to-currency" class="currency-select"></select>
+        <select id="to"></select>
+        <input type="text" id="result-amount" readonly />
       </div>
     </div>
 
     <div class="result">
-      <span id="result-text">1 USD = ...</span>
-      <span class="rate" id="rate-text"></span>
+      <span id="result-text">1 USD = 0.92 EUR</span>
+      <span id="rate-text">سعر الصرف: 1 USD = 0.92 EUR</span>
     </div>
 
-    <p class="last-update" id="last-update">جارِ تحميل الأسعار...</p>
-
-    <!-- مساحة إعلان -->
-    <div class="ad-box">
-      <!-- هنا تقدر تحط إعلان AdSense -->
-      <!-- <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-XXXXXXXXXXXX"
-           data-ad-slot="YYYYYYYYYY"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
-    </div>
+    <p id="last-update">آخر تحديث: الآن</p>
   </div>
 
-  <!-- ربط سكربت جافاسكربت -->
+  <!-- سكريبت جوجل ادسنس -->
+  <!-- ضع كود الإعلان الخاص بك هنا -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXX"></script> -->
+
   <script src="script.js"></script>
 </body>
 </html>
